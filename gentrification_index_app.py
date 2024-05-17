@@ -90,6 +90,30 @@ df_2022_copy[df_2022_copy['gentrification_index'] == df_2022_copy['gentrificatio
 
 
 import censusdis.maps as cem
+import matplotlib.pyplot as plt
+
+import matplotlib.pyplot as plt
+
+# Assuming 'cem.plot_us' is a function from the 'censusdis' package for plotting geographic data
+# and 'df_2022_copy' is a GeoDataFrame with 'gentrification_index' and 'NAME' columns
+
+# Select a county from the dropdown
+selected_county = st.selectbox('Select a county', df_2022_copy['NAME'].unique())
+
+# Plot the base map using 'cem.plot_us'
+fig, ax = plt.subplots(figsize=(12, 6))
+cem.plot_us(
+    df_2022_copy,
+    'gentrification_index',
+    cmap='hot',
+    edgecolor='#333',
+    linewidth=0.5,
+    legend=True,
+    figsize=(12, 6),
+    ax=ax  # Pass the created Matplotlib axis to the function
+)
+
+
 
 #let us plot ax which we define below
 ax = cem.plot_us(
@@ -113,17 +137,13 @@ st.pyplot(ax.figure)
 county = st.selectbox('Select a county', df_2022['NAME'])
 
 county_data = df_2022[df_2022['NAME'] == county]
-st.write('Gentrification Index:', county_data['gentrification_index'].values[0])
+st.write('Gentrification Index:', round(county_data['gentrification_index'].values[0],3))
 st.write('Median Home Value:', county_data['median_home_value'].values[0])
-st.write('Change in Median Bachelor Education:', county_data['change_median_bachelor_edu'].values[0])
+st.write('Change in Median Bachelor Education:', str(round(county_data['change_median_bachelor_edu'].values[0], 3)* 100) + '%')
 
-#provide the percentile gentrification index when a user selects a county
-percentile = np.percentile(df_2022['gentrification_index'], county_data['gentrification_index'].values[0])
-st.write('Gentrification Index Percentile:', percentile)
-
-
-
-
+#calculcate the percentile of the gentrification index the selected county in relation to all the other observations
+percentile = (df_2022['gentrification_index'] < county_data['gentrification_index'].values[0]).mean()
+st.write('Percentile:', str(round(percentile, 3) * 100) + '%')
 
 
 
