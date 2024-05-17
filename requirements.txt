@@ -1,5 +1,5 @@
-sklearn
 streamlit
+scikit-learn
 requests
 censusdis
 addfips
