@@ -82,10 +82,6 @@ df_2022['change_median_home_value'] = df_2022['change_median_home_value'] / df_2
 
 df_2022['gentrification_index'] = df_2022['change_median_bachelor_edu'] * df_2022['change_median_home_value']
 
-df_2022 = pd.get_dummies(df_2022, columns=['NAME'])
-df_2022.columns = df_2022.columns.str.replace('NAME_', '')
-
-
 df_2022_copy = df_2022.copy()
 df_2022_copy = df_2022_copy.drop(df_2022_copy[df_2022_copy['gentrification_index'] == df_2022_copy['gentrification_index'].max()].index)
 
@@ -112,6 +108,19 @@ ax = cem.plot_us(
 ax.axis('off')
 
 st.pyplot(ax.figure)
+
+#create an dropdown menu where a user can select a county from df_2022. Given the selected county provide show user the gentrification index, median bachelor education and median home value
+county = st.selectbox('Select a county', df_2022['NAME'])
+
+county_data = df_2022[df_2022['NAME'] == county]
+st.write('Gentrification Index:', county_data['gentrification_index'].values[0])
+st.write('Median Home Value:', county_data['median_home_value'].values[0])
+st.write('Change in Median Bachelor Education:', county_data['change_median_bachelor_edu'].values[0])
+
+#provide the percentile gentrification index when a user selects a county
+percentile = np.percentile(df_2022['gentrification_index'], county_data['gentrification_index'].values[0])
+st.write('Gentrification Index Percentile:', percentile)
+
 
 
 
