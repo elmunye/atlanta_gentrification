@@ -8,6 +8,10 @@ import requests
 import censusdis.data as ced
 from censusdis import states
 import addfips
+import matplotlib.pyplot as plt
+import censusdis.maps as cem
+
+
 
 # Title
 st.title('Gentrification Index for Georgia by County')
